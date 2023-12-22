@@ -1,0 +1,6 @@
+.film-list {
+    display: grid;
+    grid-template-columns: max-content max-content;
+    gap: 37px 36px;
+    padding: 32px 36px;
+}

@@ -1,0 +1,12 @@
+body {
+    background-color: #f7f7f7;
+}
+
+.page {
+    background-color: #fff;
+    width: 1010px;
+    min-width: 320px;
+    margin-right: auto;
+    margin-left: auto;
+    min-height: 1147px;
+}
