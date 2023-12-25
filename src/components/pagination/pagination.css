@@ -1,0 +1,13 @@
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+
+:where(.css-dev-only-do-not-override-gzal6t).ant-pagination .ant-pagination-item-active {
+    background-color: #1890ff;
+    border: none;
+}
+
+:where(.css-dev-only-do-not-override-gzal6t).ant-pagination .ant-pagination-item-active a {
+    color: #fff;
+}

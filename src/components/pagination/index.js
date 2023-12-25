@@ -1,3 +1,3 @@
-import Pagination from './pagination';
+import Pages from './pagination';
 
-export default Pagination;
+export default Pages;

@@ -1,7 +1,34 @@
 import { Component } from 'react';
+import { Tabs } from 'antd';
+import SearchPanel from '../search-panel/search-panel';
 
-export default class Tabs extends Component {
+import './tabs.css';
+
+export default class TabsApp extends Component {
     render() {
-        return <div></div>;
+        const items = [
+            {
+                key: '1',
+                label: 'Search',
+                children: <SearchPanel />,
+            },
+            {
+                key: '2',
+                label: 'Rated',
+            },
+        ];
+
+        return (
+            <Tabs
+                defaultActiveKey="1"
+                items={items}
+                centered
+                style={{
+                    marginLeft: 36,
+                    marginRight: 36,
+                    justifyContent: 'center',
+                }}
+            />
+        );
     }
 }

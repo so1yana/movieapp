@@ -1,3 +1,3 @@
-import Tabs from './tabs';
+import TabsApp from './tabs';
 
-export default Tabs;
+export default TabsApp;
