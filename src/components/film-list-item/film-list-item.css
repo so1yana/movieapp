@@ -10,7 +10,7 @@
 
 .film-image {
     width: 183px;
-    height: 100%;
+    height: 280px;
 }
 
 :where(.css-dev-only-do-not-override-gzal6t).ant-rate .ant-rate-star:not(:last-child) {
@@ -24,8 +24,8 @@
 
 .circle-rate {
     display: flex;
-    width: 30px;
-    height: 30px;
+    min-width: 30px;
+    min-height: 30px;
     margin-left: auto;
     border: 1px solid yellow;
     border-radius: 50%;
@@ -35,4 +35,8 @@
 
 .film-data {
     font-size: 12px;
+}
+
+.film-description {
+    height: 129px;
 }

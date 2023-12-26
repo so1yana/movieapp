@@ -4,7 +4,26 @@ import { Pagination } from 'antd';
 import './pagination.css';
 
 export default class Pages extends Component {
+    state = {
+        currentPage: 1,
+    };
+
+    changePage = (page) => {
+        this.setState(() => ({ currentPage: page }));
+    };
+
     render() {
-        return <Pagination className="pagination" defaultCurrent={1} total={8} />;
+        const { pagesCount } = this.props;
+
+        return (
+            <Pagination
+                className="pagination"
+                current={this.state.currentPage}
+                total={pagesCount}
+                pageSize={20}
+                showSizeChanger={false}
+                onChange={this.changePage}
+            />
+        );
     }
 }

@@ -6,11 +6,13 @@ import './tabs.css';
 
 export default class TabsApp extends Component {
     render() {
+        const { searchMovie } = this.props;
+
         const items = [
             {
                 key: '1',
                 label: 'Search',
-                children: <SearchPanel />,
+                children: <SearchPanel searchMovie={searchMovie} />,
             },
             {
                 key: '2',
