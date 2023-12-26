@@ -14,11 +14,11 @@ export default class Pages extends Component {
 
     render() {
         const { pagesCount } = this.props;
-
+        const { currentPage } = this.state;
         return (
             <Pagination
                 className="pagination"
-                current={this.state.currentPage}
+                current={currentPage}
                 total={pagesCount}
                 pageSize={20}
                 showSizeChanger={false}

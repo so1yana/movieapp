@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Component } from 'react';
 import { Card, Flex, Typography, Rate, Space, Tag } from 'antd';
 
@@ -9,17 +10,18 @@ export default class FilmListItem extends Component {
         const words = text.split(' ');
         let symCount = 0;
         let result = '';
-        for (const word of words) {
+        words.every((word) => {
             for (let i = 0; i < word.length; i++) {
                 if (word[i].match(/[a-z]/i)) symCount += 1;
             }
             if (symCount >= limit) {
-                break;
-            } else result += ' ' + word;
-        }
-        console.log(symCount);
+                return false;
+            }
+            result += ` ${word}`;
+            return true;
+        });
         if (symCount < limit) return result.trim();
-        else return result.trim() + '...';
+        return `${result.trim()}...`;
     };
 
     render() {

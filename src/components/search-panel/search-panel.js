@@ -8,12 +8,12 @@ export default class SearchPanel extends Component {
 
     handlerSubmit = (e) => {
         e.preventDefault();
-        const query = this.state.value;
-        this.props.searchMovie(query, 1);
+        const { value } = this.state;
+        const { searchMovie } = this.props;
+        searchMovie(value, 1);
     };
 
     render() {
-        console.log(this.state.value);
         return (
             <form onSubmit={(e) => this.handlerSubmit(e)}>
                 <Input

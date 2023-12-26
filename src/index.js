@@ -19,6 +19,7 @@ class App extends Component {
             headers: {
                 accept: 'application/json',
                 Authorization:
+                    // eslint-disable-next-line max-len
                     'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODA0ZTUyMDNhOTY3YmYyMjY2ZDc0MDYxNDNmMjYzMyIsInN1YiI6IjY1OGE5ZGRiNjhiNzY2NjhmYjJkNjMyOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lnB3xNQtF71RWlnpjbdjEd-M7-wOyy5Y0CDFQTlR8p4',
             },
         };
@@ -29,18 +30,19 @@ class App extends Component {
         )
             .then((response) => response.json())
             .then((response) => {
-                console.log(response);
                 this.setState({ movies: response.results, pages: response.total_results });
             })
-            .catch((err) => console.error(err));
+            .catch((err) => () => err);
     };
 
     render() {
+        const { movies, pages } = this.state;
+
         return (
             <div className="page">
                 <TabsApp searchMovie={this.searchMovie} />
-                <FilmList movies={this.state.movies} />
-                <Pages pagesCount={this.state.pages} />
+                <FilmList movies={movies} />
+                <Pages pagesCount={pages} />
             </div>
         );
     }
