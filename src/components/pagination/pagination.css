@@ -2,6 +2,7 @@
     display: flex;
     justify-content: center;
     padding-bottom: 32px;
+    padding-top: 16px;
 }
 
 :where(.css-dev-only-do-not-override-gzal6t).ant-pagination .ant-pagination-item-active {
