@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import { Component } from 'react';
 import { Card, Flex, Typography, Rate, Space, Tag } from 'antd';
+import { format } from 'date-fns';
 
 import './film-list-item.css';
 
@@ -38,6 +39,12 @@ export default class FilmListItem extends Component {
             width: 450,
             borderRadius: 0,
         };
+        let formatedDate;
+        try {
+            formatedDate = format(release_date, 'MMMM d, Y');
+        } catch {
+            formatedDate = 'Not released';
+        }
 
         return (
             <Card
@@ -66,7 +73,7 @@ export default class FilmListItem extends Component {
                             </Typography.Title>
                             <span className="circle-rate">{vote_average.toFixed(1)}</span>
                         </Flex>
-                        <span className="film-data">{release_date}</span>
+                        <span className="film-date">{formatedDate}</span>
                         <Flex>
                             <Space size={[0, 8]}>
                                 <Tag>Action</Tag>

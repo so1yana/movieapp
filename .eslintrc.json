@@ -10,6 +10,7 @@
     },
     "plugins": ["import", "jsx-a11y", "prettier", "react-hooks"],
     "rules": {
+        "import/no-extraneous-dependencies": ["off"],
         "class-methods-use-this": "off",
         "arrow-parens": "off", // Несовместимо с prettier
         "object-curly-newline": "off", // Несовместимо с prettier

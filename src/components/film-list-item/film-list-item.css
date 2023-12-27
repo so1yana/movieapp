@@ -11,6 +11,7 @@
 .film-image {
     width: 183px;
     height: 280px;
+    min-width: 183px;
 }
 
 :where(.css-dev-only-do-not-override-gzal6t).ant-rate .ant-rate-star:not(:last-child) {
@@ -33,7 +34,8 @@
     align-items: center;
 }
 
-.film-data {
+.film-date {
+    color: lightgray;
     font-size: 12px;
 }
 

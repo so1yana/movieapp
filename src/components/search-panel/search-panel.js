@@ -1,26 +1,17 @@
 import { Component } from 'react';
 import { Input } from 'antd';
+import { debounce } from 'lodash';
 
 export default class SearchPanel extends Component {
-    state = {
-        value: '',
-    };
+    // eslint-disable-next-line no-console
+    myDebounce = debounce((fn) => fn(), 1000);
 
-    handlerSubmit = (e) => {
-        e.preventDefault();
-        const { value } = this.state;
+    handleSearch = (e) => {
         const { searchMovie } = this.props;
-        searchMovie(value, 1);
+        this.myDebounce(() => searchMovie(e.target.value), 1000);
     };
 
     render() {
-        return (
-            <form onSubmit={(e) => this.handlerSubmit(e)}>
-                <Input
-                    onChange={(e) => this.setState({ value: e.target.value })}
-                    placeholder="Type to search..."
-                />
-            </form>
-        );
+        return <Input type="text" onChange={this.handleSearch} placeholder="Type to search..." />;
     }
 }

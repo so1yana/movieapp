@@ -18,6 +18,7 @@ export default class Pages extends Component {
         return (
             <Pagination
                 className="pagination"
+                defaultCurrent={1}
                 current={currentPage}
                 total={pagesCount}
                 pageSize={20}
