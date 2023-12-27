@@ -1,3 +1,4 @@
+/* eslint-disable react/destructuring-assignment */
 import { createRoot } from 'react-dom/client';
 import { Component } from 'react';
 import FilmList from './components/film-list';
@@ -43,6 +44,7 @@ class App extends Component {
                     status: 'ok',
                 });
             })
+            // eslint-disable-next-line no-console
             .catch((err) => this.setState({ searching: false, status: err }));
     };
 
