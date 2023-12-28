@@ -4,22 +4,18 @@ import { Pagination } from 'antd';
 import './pagination.css';
 
 export default class Pages extends Component {
-    state = {
-        currentPage: 1,
-    };
-
     changePage = (page) => {
-        this.setState(() => ({ currentPage: page }));
+        const { query, searchMovie } = this.props;
+        searchMovie(query, page);
     };
 
     render() {
-        const { pagesCount } = this.props;
-        const { currentPage } = this.state;
+        const { pagesCount, page } = this.props;
         return (
             <Pagination
                 className="pagination"
                 defaultCurrent={1}
-                current={currentPage}
+                current={page}
                 total={pagesCount}
                 pageSize={20}
                 showSizeChanger={false}

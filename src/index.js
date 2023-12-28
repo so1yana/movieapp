@@ -5,38 +5,31 @@ import Pages from './components/pagination';
 import TabsApp from './components/tabs';
 import Spinner from './components/spinner';
 import Info from './components/info';
+import ApiRequests from './components/api-requests';
 
 import './index.css';
 import './reset.css';
 
 class App extends Component {
     state = {
+        query: '',
         movies: [],
+        page: 1,
         pages: 1,
         searching: false,
         status: 'Ready',
     };
 
+    api = new ApiRequests();
+
     searchMovie = (query, page = 1) => {
-        this.setState({ searching: true, movies: [] });
-
-        const options = {
-            method: 'GET',
-            headers: {
-                accept: 'application/json',
-                Authorization:
-                    // eslint-disable-next-line max-len
-                    'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJhODA0ZTUyMDNhOTY3YmYyMjY2ZDc0MDYxNDNmMjYzMyIsInN1YiI6IjY1OGE5ZGRiNjhiNzY2NjhmYjJkNjMyOSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.lnB3xNQtF71RWlnpjbdjEd-M7-wOyy5Y0CDFQTlR8p4',
-            },
-        };
-
-        fetch(
-            `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=${page}`,
-            options,
-        )
+        this.setState({ query, searching: true, movies: [] });
+        this.api
+            .searchMovie(query, page)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
+                    page: response.page,
                     movies: response.results,
                     pages: response.total_results,
                     searching: false,
@@ -59,13 +52,18 @@ class App extends Component {
     }
 
     render() {
-        const { pages } = this.state;
+        const { page, pages, query } = this.state;
 
         return (
             <div className="page">
                 <TabsApp searchMovie={this.searchMovie} />
                 {this.check()}
-                <Pages pagesCount={pages} />
+                <Pages
+                    page={page}
+                    pagesCount={pages}
+                    searchMovie={this.searchMovie}
+                    query={query}
+                />
             </div>
         );
     }
