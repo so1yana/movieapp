@@ -6,6 +6,7 @@ import TabsApp from './components/tabs';
 import Spinner from './components/spinner';
 import Info from './components/info';
 import ApiRequests from './components/api-requests';
+import ErrorPage from './components/error-page';
 
 import './index.css';
 import './reset.css';
@@ -17,13 +18,16 @@ class App extends Component {
         page: 1,
         pages: 1,
         searching: false,
-        status: 'Ready',
+        status: 'Creating guest session',
+        sessionId: null,
     };
 
     api = new ApiRequests();
 
     searchMovie = (query, page = 1) => {
-        this.setState({ query, searching: true, movies: [] });
+        const str = query.replace(/\s+/g, '');
+        if (str === '') return;
+        this.setState({ query, searching: true, movies: [], status: 'Searching' });
         this.api
             .searchMovie(query, page)
             .then((response) => response.json())
@@ -33,31 +37,54 @@ class App extends Component {
                     movies: response.results,
                     pages: response.total_results,
                     searching: false,
-                    status: 'ok',
                 });
+                if (response.total_results === 0) this.setState({ status: 'Nothing was found' });
+                else this.setState({ status: 'ok' });
             })
-            .catch((err) => this.setState({ searching: false, status: err }));
+            .catch(() => this.setState({ searching: false, status: 'Error on search' }));
+    };
+
+    changeRateMovie = (rate, movieId) => {
+        const { sessionId } = this.state;
+        this.api.changeRate(rate, movieId, sessionId);
     };
 
     check() {
         const { movies, searching, status } = this.state;
-
-        if (movies.length > 0) return <FilmList movies={movies} />;
+        if (movies.length > 0)
+            return <FilmList movies={movies} changeRateMovie={this.changeRateMovie} />;
         if (searching) return <Spinner />;
-        if (status !== 'ok') {
-            if (typeof status === 'object') return <Info text="Something went wrong..." />;
-        } else if (status === 'ok' && movies.length === 0)
-            return <Info text="Nothing was found..." />;
+        if (status === 'Error on search') {
+            return <Info text="Something went wrong..." />;
+        }
+        if (status === 'Nothing was found') return <Info text="Nothing was found..." />;
         return null;
     }
 
     render() {
-        const { page, pages, query } = this.state;
+        const { page, pages, query, status, sessionId } = this.state;
+        console.log(status);
+        if (status === 'Creating guest session') {
+            const res = new Promise((resolve) => {
+                const response = this.api.createGuestSession();
+                resolve(response);
+            });
+            res.then((response) => {
+                if (response !== 'error') {
+                    this.setState({ status: 'Ready', sessionId: response.guest_session_id });
+                } else this.setState({ status: 'Error' });
+            });
+            return <Spinner />;
+        }
+
+        if (status === 'Error') {
+            return <ErrorPage />;
+        }
 
         return (
             <div className="page">
                 <TabsApp searchMovie={this.searchMovie} />
-                {this.check()}
+                {this.check(sessionId)}
                 <Pages
                     page={page}
                     pagesCount={pages}

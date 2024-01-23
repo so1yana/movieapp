@@ -26,8 +26,8 @@ export default class FilmListItem extends Component {
     };
 
     render() {
-        const { film } = this.props;
-        const { title, overview, vote_average, release_date, poster_path } = film;
+        const { film, changeRateMovie } = this.props;
+        const { id, title, overview, vote_average, release_date, poster_path } = film;
         const noPosterImg =
             'https://www.stpgoods.com/media/catalog/product/cache/37beda607054ab849ef979c115630c43/5/4/54163.jpg';
         const filmImg = poster_path
@@ -87,8 +87,9 @@ export default class FilmListItem extends Component {
                             count={10}
                             defaultValue={vote_average}
                             allowHalf
-                            disabled
+                            allowClear={false}
                             style={{ height: 35 }}
+                            onChange={(value) => changeRateMovie(value, id)}
                         />
                     </Flex>
                 </Flex>
