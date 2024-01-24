@@ -27,6 +27,7 @@ class App extends Component {
         status: 'Creating guest session',
         sessionId: null,
         currentTab: 'Search',
+        hasError: false,
     };
 
     api = new ApiRequests();
@@ -36,23 +37,22 @@ class App extends Component {
             const response = this.api.createGuestSession();
             resolve(response);
         });
-        let isOk = true;
         session
             .then((response) => {
                 if (response !== 'error') {
                     this.setState({ status: 'Ready', sessionId: response.guest_session_id });
+                    this.getGenres();
                 } else {
                     this.setState({ status: 'Error' });
-                    console.log('throwing error');
                     throw new Error();
                 }
             })
             // eslint-disable-next-line no-return-assign
-            .catch(() => (isOk = false));
-        if (!isOk) {
-            console.log('return ');
-            return;
-        }
+            .catch(() => this.setState({ hasError: true }));
+        // eslint-disable-next-line react/destructuring-assignment
+    }
+
+    getGenres = () => {
         const genres = new Promise((resolve) => {
             const response = this.api.getAllGenres();
             resolve(response);
@@ -61,7 +61,7 @@ class App extends Component {
             this.setState({ genres: response, status: 'Ready' });
             this.getRatedMovies();
         });
-    }
+    };
 
     changeTab = (tab) => {
         const { currentTab } = this.state;
@@ -200,12 +200,13 @@ class App extends Component {
             sessionId,
             currentTab,
             genres,
+            hasError,
         } = this.state;
         if (status === 'Creating guest session') {
             return <Spinner />;
         }
 
-        if (status === 'Error') {
+        if (hasError) {
             return <ErrorPage />;
         }
 
