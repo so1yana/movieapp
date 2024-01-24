@@ -36,11 +36,21 @@ class App extends Component {
             const response = this.api.createGuestSession();
             resolve(response);
         });
-        session.then((response) => {
-            if (response !== 'error') {
-                this.setState({ status: 'Ready', sessionId: response.guest_session_id });
-            } else this.setState({ status: 'Error' });
-        });
+        let isOk = true;
+        session
+            .then((response) => {
+                if (response !== 'error') {
+                    this.setState({ status: 'Ready', sessionId: response.guest_session_id });
+                } else {
+                    this.setState({ status: 'Error' });
+                    throw new Error();
+                }
+            })
+            .catch((isOk = false));
+        if (!isOk) {
+            console.log('return ');
+            return;
+        }
         const genres = new Promise((resolve) => {
             const response = this.api.getAllGenres();
             resolve(response);
@@ -52,7 +62,8 @@ class App extends Component {
     }
 
     changeTab = (tab) => {
-        this.setState({ currentTab: tab });
+        const { currentTab } = this.state;
+        if (currentTab !== tab) this.setState({ currentTab: tab });
     };
 
     searchMovie = (query, page = 1) => {
@@ -122,7 +133,7 @@ class App extends Component {
                 if (error.message === 'Get out') {
                     this.setState({ status: 'Ready' });
                     this.showRatedMovies(1);
-                }
+                } else this.setState({ searching: false, status: 'Error on search' });
             });
     };
 
@@ -145,7 +156,10 @@ class App extends Component {
     check() {
         const { movies, ratedMoviesOnPage, searching, status, currentTab } = this.state;
         if (currentTab === 'Search')
-            if (searching) return <Spinner />;
+            if (status === 'Nothing was found') return <Info text="Nothing was found..." />;
+            else if (status === 'Error on search') {
+                return <Info text="Something went wrong..." />;
+            } else if (searching) return <Spinner />;
             else if (movies.length > 0) {
                 return (
                     <FilmList
@@ -168,10 +182,6 @@ class App extends Component {
                     />
                 );
         }
-        if (status === 'Error on search') {
-            return <Info text="Something went wrong..." />;
-        }
-        if (status === 'Nothing was found') return <Info text="Nothing was found..." />;
         return null;
     }
 
@@ -187,6 +197,7 @@ class App extends Component {
             currentTab,
             genres,
         } = this.state;
+        console.log(status);
         if (status === 'Creating guest session') {
             return <Spinner />;
         }
