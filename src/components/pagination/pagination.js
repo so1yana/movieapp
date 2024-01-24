@@ -5,8 +5,9 @@ import './pagination.css';
 
 export default class Pages extends Component {
     changePage = (page) => {
-        const { query, searchMovie } = this.props;
-        searchMovie(query, page);
+        const { query, searchMovie, showRatedMovies, type } = this.props;
+        if (type === 'Search') searchMovie(query, page);
+        else if (type === 'Rated') showRatedMovies(page);
     };
 
     render() {

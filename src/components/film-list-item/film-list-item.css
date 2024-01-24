@@ -40,5 +40,11 @@
 }
 
 .film-description {
-    height: 129px;
+    height: 120px;
+    line-height: 18px;
+}
+
+.film-genres {
+    flex-wrap: wrap;
+    row-gap: 1px !important;
 }

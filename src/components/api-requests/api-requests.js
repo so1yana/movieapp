@@ -1,6 +1,5 @@
 export default class ApiRequests {
-    options = (method, body = null) => {
-        console.log(body);
+    options = (method = 'GET', body = null) => {
         return {
             method,
             headers: {
@@ -14,31 +13,51 @@ export default class ApiRequests {
         };
     };
 
-    createGuestSession = async () => {
+    async createGuestSession() {
         const res = await fetch(
             'https://api.themoviedb.org/3/authentication/guest_session/new',
-            this.options('GET'),
+            this.options(),
         )
             .then((response) => response.json())
             .catch(() => 'error');
         return res;
-    };
+    }
 
     searchMovie(query, page = 1) {
         return fetch(
             `https://api.themoviedb.org/3/search/movie?query=${query}&include_adult=false&language=en-US&page=${page}`,
-            this.options('GET'),
+            this.options(),
         );
     }
 
-    changeRate(rate, movieId, sessionId) {
-        console.log(this.options('POST', rate));
-        fetch(
+    getRatedMovies = async (page) => {
+        const res = await fetch(
+            `https://api.themoviedb.org/3/account/20861064/rated/movies?page=${page}&sort_by=created_at.asc`,
+            this.options(),
+        )
+            .then((response) => response.json())
+            .catch(() => 'error');
+
+        return res;
+    };
+
+    async changeRate(rate, movieId, sessionId) {
+        const res = fetch(
             `https://api.themoviedb.org/3/movie/${movieId}/rating?guest_session_id=${sessionId}`,
             this.options('POST', rate),
         )
             .then((response) => response.json())
-            .then((response) => console.log(response))
             .catch((err) => console.error(err));
+        return res;
+    }
+
+    async getAllGenres() {
+        const res = await fetch(
+            'https://api.themoviedb.org/3/genre/movie/list?language=en',
+            this.options(),
+        )
+            .then((response) => response.json())
+            .catch((err) => console.error(err));
+        return res;
     }
 }
