@@ -15,7 +15,7 @@
 }
 
 :where(.css-dev-only-do-not-override-gzal6t).ant-rate .ant-rate-star:not(:last-child) {
-    margin-inline-end: 3px;
+    margin-inline-end: 3px !important;
 }
 
 .item-title {
