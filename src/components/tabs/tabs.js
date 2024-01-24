@@ -14,7 +14,7 @@ export default function TabsApp(props) {
     //     res.then((response) => console.log(response));
     // };
 
-    const { searchMovie, changeTab, getRatedMovies } = props;
+    const { searchMovie, changeTab } = props;
     const items = [
         {
             key: '1',
@@ -39,9 +39,6 @@ export default function TabsApp(props) {
             onTabClick={(key) => {
                 const tabName = items[key - 1].label;
                 changeTab(tabName);
-                if (key === '2') {
-                    getRatedMovies();
-                }
             }}
         />
     );

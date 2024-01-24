@@ -43,10 +43,12 @@ class App extends Component {
                     this.setState({ status: 'Ready', sessionId: response.guest_session_id });
                 } else {
                     this.setState({ status: 'Error' });
+                    console.log('throwing error');
                     throw new Error();
                 }
             })
-            .catch((isOk = false));
+            // eslint-disable-next-line no-return-assign
+            .catch(() => (isOk = false));
         if (!isOk) {
             console.log('return ');
             return;
@@ -63,7 +65,9 @@ class App extends Component {
 
     changeTab = (tab) => {
         const { currentTab } = this.state;
-        if (currentTab !== tab) this.setState({ currentTab: tab });
+        if (currentTab === tab) return;
+        if (tab === 'Rated') this.getRatedMovies();
+        this.setState({ currentTab: tab });
     };
 
     searchMovie = (query, page = 1) => {
@@ -197,7 +201,6 @@ class App extends Component {
             currentTab,
             genres,
         } = this.state;
-        console.log(status);
         if (status === 'Creating guest session') {
             return <Spinner />;
         }
@@ -209,12 +212,7 @@ class App extends Component {
         return (
             <div className="page">
                 <Provider value={genres}>
-                    <TabsApp
-                        searchMovie={this.searchMovie}
-                        getRatedMovies={this.getRatedMovies}
-                        sessionId={sessionId}
-                        changeTab={this.changeTab}
-                    />
+                    <TabsApp searchMovie={this.searchMovie} changeTab={this.changeTab} />
                     {this.check(sessionId)}
                     <Pages
                         type={currentTab}
