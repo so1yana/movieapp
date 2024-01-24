@@ -89,8 +89,10 @@ class App extends Component {
     };
 
     changeRateMovie = (rate, movieId) => {
-        const { sessionId } = this.state;
-        this.api.changeRate(rate, movieId, sessionId).then(() => this.getRatedMovies());
+        const { sessionId, currentTab } = this.state;
+        this.api.changeRate(rate, movieId, sessionId).then(() => {
+            if (currentTab !== 'Rated') this.getRatedMovies();
+        });
     };
 
     getRatedMovies = () => {
