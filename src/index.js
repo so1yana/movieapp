@@ -47,9 +47,7 @@ class App extends Component {
                     throw new Error();
                 }
             })
-            // eslint-disable-next-line no-return-assign
             .catch(() => this.setState({ hasError: true }));
-        // eslint-disable-next-line react/destructuring-assignment
     }
 
     getGenres = () => {
